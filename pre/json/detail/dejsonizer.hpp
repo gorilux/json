@@ -16,6 +16,7 @@
 #include <pre/enums/to_underlying.hpp>
 
 #include <pre/variant/for_each_type.hpp>
+#include <iostream>
 
 namespace pre { namespace json { namespace detail {
 
@@ -118,7 +119,17 @@ namespace pre { namespace json { namespace detail {
       enable_if_is_directly_serializable_t<T>* = nullptr>
     void operator()(T& value) const {
       //TODO: Better diagnostic, current exception is : std::exception::what: type must be number, but is string, we should reoutput the json object in this case. 
-      value = _json_object.get<T>();
+      try {
+        if(!_json_object.is_null()){
+          value = _json_object.get<T>();
+        }        
+      }
+      catch(std::exception& e)
+      {
+        std::cerr << "Value: " << _json_object.dump() << std::endl;
+        std::rethrow_exception(std::current_exception());
+      }
+      
     }
 
     template<class T, 
