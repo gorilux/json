@@ -16,7 +16,6 @@
 #include <pre/enums/to_underlying.hpp>
 
 #include <pre/variant/for_each_type.hpp>
-#include <iostream>
 
 namespace pre { namespace json { namespace detail {
 
@@ -122,11 +121,10 @@ namespace pre { namespace json { namespace detail {
       try {
         if(!_json_object.is_null()){
           value = _json_object.get<T>();
-        }        
+        }
       }
       catch(std::exception& e)
       {
-        std::cerr << "Value: " << _json_object.dump() << std::endl;
         std::rethrow_exception(std::current_exception());
       }
       

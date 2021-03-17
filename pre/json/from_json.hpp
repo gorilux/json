@@ -83,6 +83,22 @@ namespace pre { namespace json {
     dejsonizer(object);
     return object;
   }
+
+  template<class T>
+  void from_json(const std::string& serialized_json, T& object) {
+    const nlohmann::json json_object = nlohmann::json::parse(serialized_json);    
+    detail::dejsonizer dejsonizer(json_object);
+    dejsonizer(object);    
+  }
+
+  /**
+   * \brief Same as pre::json::from_json(const std::string&) but directly with a JSON.
+   */
+  template<class T>
+  void from_json(const nlohmann::json& json_object, T& object) {    
+    detail::dejsonizer dejsonizer(json_object);
+    dejsonizer(object);    
+  }
 }}
 
 #endif
